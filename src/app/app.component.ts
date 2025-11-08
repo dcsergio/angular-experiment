@@ -1,33 +1,15 @@
-import {Component} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {AComponent} from './a/a.component';
-import {BComponent} from './b/b.component';
+import { Component } from '@angular/core';
+import { RouterOutlet } from "@angular/router";
+import { NavbarComponent } from "./component/navbar/navbar.component";
+import { HomeComponent } from "./component/home/home.component";
 
-const routes: Routes = [
-  {path: 'a', component: AComponent},
-  {path: 'b', component: BComponent},
-  {path: '', redirectTo: 'a', pathMatch: 'full'}
-];
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule],
-  template: `
-    <header>
-      <nav>
-        <a routerLink="/a">A</a>
-        <br>
-        <a routerLink="/b">B</a>
-      </nav>
-    </header>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-    <footer>
-      © 2025 Il Mio Sito Angular
-    </footer>
-  `
+  templateUrl: './app.component.html',
+  imports: [RouterOutlet, NavbarComponent, HomeComponent]
 })
 export class AppComponent {
+  title: any
 }

@@ -1,1 +1,93 @@
-/* You can add global styles to this file, and also import other style files */
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+.nav-item {
+    list-style: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+.btn-prof {
+    background-color: #4CAF50;
+    /* Colore di sfondo verde */
+    color: white;
+    /* Colore del testo bianco */
+    padding: 12px 24px;
+    /* Spaziatura interna (alto/basso, destra/sinistra) */
+    border: none;
+    /* Rimuove il bordo predefinito */
+    border-radius: 5px;
+    /* Angoli arrotondati */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Font pulito */
+    font-size: 16px;
+    /* Dimensione del testo */
+    cursor: pointer;
+    /* Cambia il cursore in mano al passaggio del mouse */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Ombreggiatura sottile */
+    transition: all 0.3s ease;
+    /* Transizione per l'animazione */
+}
+
+/* Stile al passaggio del mouse */
+.btn-prof:hover {
+    background-color: #45a049;
+    /* Scurisce leggermente lo sfondo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Ombra più pronunciata */
+}
+
+.p-nice {
+    /* Stile di base e aspetto */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    /* Aumentato per migliore estetica */
+    margin: 20px auto;
+    /* Centra l'intero blocco orizzontalmente nella pagina */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    /* Dimensione e Testo */
+    display: inline-flex;
+    /* Il contenitore si adatta alla larghezza del contenuto */
+    max-width: 80%;
+    /* Limita la larghezza massima per non estendersi troppo su schermi grandi */
+    text-align: center;
+    /* Centra il testo all'interno del blocco */
+
+    /* Centratura del testo verticale (se necessario, in un contenitore flex) */
+    align-items: center;
+    justify-content: center;
+
+    /* Carattere e Leggibilità */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* Font pulito e leggibile */
+    color: #333;
+    line-height: 1.5;
+    /* Migliore spaziatura tra le righe */
+    font-size: 16px;
+    /* Dimensione carattere standard e leggibile */
+}
