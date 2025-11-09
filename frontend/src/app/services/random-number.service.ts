@@ -9,7 +9,7 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class RandomNumberService {
   private readonly apiUrl = 'http://localhost:4040/numbers/random?min=0&max=1';
-  private readonly intervalMs = 5000;
+  private readonly intervalMs = 1000;
 
   startTimestamp: number;
 

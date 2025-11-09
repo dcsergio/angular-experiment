@@ -1,0 +1,75 @@
+/* MAIN CONTAINER (UL) */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    background-color: #eeeeee;
+    padding: 30px;
+    /* Stesso padding di .container */
+    margin: 20px auto;
+
+    max-width: 720px;
+    width: 100%;
+    box-sizing: border-box;
+    /* IMPORTANTE: include padding nella larghezza */
+
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* INDIVIDUAL ITEM (LI) */
+.nav-item {
+    flex: 1;
+    display: flex;
+    /* Aggiungo flex anche qui */
+    align-items: center;
+    /* Centro verticalmente */
+    justify-content: center;
+    /* Centro orizzontalmente */
+    transition: background-color 0.2s ease;
+}
+
+/* LINK (A) */
+.nav-link {
+    text-decoration: none;
+    color: #343a40;
+    font-weight: 500;
+    font-size: large;
+
+    display: block;
+    /* Cambiato da flex a block */
+    text-align: center;
+
+    width: 100%;
+    padding: 5px;
+    /* Rimosso padding, lo gestisce il parent */
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+/* HOVER STATE */
+.nav-item:hover {
+    background-color: #2c3e50;
+    cursor: pointer;
+    border-radius: 8px;
+    /* Leggero arrotondamento per l'hover */
+}
+
+/* ACTIVE STATE */
+.nav-link.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    font-weight: 600;
+}
+
+.nav-link.active:hover {
+    color: #007bff;
+    border-bottom: 2px solid #ffffff00;
+    font-weight: 600;
+}

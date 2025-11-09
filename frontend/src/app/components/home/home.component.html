@@ -1,12 +1,12 @@
 <div class="container">
     <h1 class="p-nice">Angular is Easy</h1>
     <br>
-    <button (click)="toggle()" class="btn-prof">TOGGLE</button>
-    <button (click)="hide()" class="btn-prof">HIDE</button>
-    <button (click)="show()" class="btn-prof">SHOW</button>
-    <button (click)="start()" class="btn-prof">START</button>
-    <button (click)="stop()" class="btn-prof">STOP</button>
-    <button (click)="child()" class="btn-prof">PASS TO CHILD</button>
+    <button (click)="toggle()" class="btn-prof" type="button">TOGGLE</button>
+    <button (click)="hide()" class="btn-prof" type="button">HIDE</button>
+    <button (click)="show()" class="btn-prof" type="button">SHOW</button>
+    <button (click)="start()" class="btn-prof" type="button">SUBSCRIBE</button>
+    <button (click)="stop()" class="btn-prof" type="button">UNSUBSCRIBE</button>
+    <button (click)="child()" class="btn-prof" type="button">TO CHILD</button>
     <br>
     <p class="message-box" [class.message-box-freeze]="!isActive">SERVICE &rightarrow; HOME: {{ randomNumber }}</p>
     <app-child [value]="childValue" (updateParentEvent)="updateParent($any($event))"></app-child>
