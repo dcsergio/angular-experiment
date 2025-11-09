@@ -7,13 +7,11 @@
 
     background-color: #eeeeee;
     padding: 30px;
-    /* Stesso padding di .container */
     margin: 20px auto;
 
     max-width: 720px;
     width: 100%;
     box-sizing: border-box;
-    /* IMPORTANTE: include padding nella larghezza */
 
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -25,11 +23,8 @@
 .nav-item {
     flex: 1;
     display: flex;
-    /* Aggiungo flex anche qui */
     align-items: center;
-    /* Centro verticalmente */
     justify-content: center;
-    /* Centro orizzontalmente */
     transition: background-color 0.2s ease;
 }
 
@@ -41,12 +36,10 @@
     font-size: large;
 
     display: block;
-    /* Cambiato da flex a block */
     text-align: center;
 
     width: 100%;
     padding: 5px;
-    /* Rimosso padding, lo gestisce il parent */
 }
 
 .nav-link:hover {
@@ -58,7 +51,6 @@
     background-color: #2c3e50;
     cursor: pointer;
     border-radius: 8px;
-    /* Leggero arrotondamento per l'hover */
 }
 
 /* ACTIVE STATE */
