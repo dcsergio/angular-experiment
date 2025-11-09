@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: restserver
+
+server:
+  port: 4040

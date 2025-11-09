@@ -1,0 +1,10 @@
+<h1 class="p-nice">Esperimenti Angular</h1>
+<br>
+<button (click)="toggle()" class="btn-prof">TOGGLA</button>
+<button (click)="hide()" class="btn-prof">NASCONDI</button>
+<button (click)="show()" class="btn-prof">MOSTRA</button>
+<button (click)="avvia()" class="btn-prof">AVVIA</button>
+<button (click)="ferma()" class="btn-prof">FERMA</button>
+<br>
+<p class="message-box" *ngIf="isVisible">Mi vedi?</p>
+<p class="message-box" [class.message-box-freeze]="!isActive">Numero: {{ randomNumber }}</p>

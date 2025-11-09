@@ -1,0 +1,59 @@
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+.nav-item {
+    list-style: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+/* Stile per i Bottoni */
+.btn-prof {
+    background-color: #3498db;
+    /* Un bel blu brillante */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    /* Spaziatura uniforme tra i bottoni */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Effetto al passaggio del mouse */
+}
+
+.btn-prof:hover {
+    background-color: #2980b9;
+    /* Tonalità più scura al passaggio del mouse */
+}
+
+/* Stile per il Titolo (h1) */
+.p-nice {
+    color: #2c3e50;
+    /* Blu scuro professionale */
+    border-bottom: 2px solid #3498db;
+    /* Una linea di design sotto il titolo */
+    padding-bottom: 10px;
+    text-align: center;
+}
