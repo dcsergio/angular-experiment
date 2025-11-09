@@ -1,10 +1,14 @@
-<h1 class="p-nice">Esperimenti Angular</h1>
-<br>
-<button (click)="toggle()" class="btn-prof">TOGGLA</button>
-<button (click)="hide()" class="btn-prof">NASCONDI</button>
-<button (click)="show()" class="btn-prof">MOSTRA</button>
-<button (click)="avvia()" class="btn-prof">AVVIA</button>
-<button (click)="ferma()" class="btn-prof">FERMA</button>
-<br>
-<p class="message-box" *ngIf="isVisible">Mi vedi?</p>
-<p class="message-box" [class.message-box-freeze]="!isActive">Numero: {{ randomNumber }}</p>
+<div class="container">
+    <h1 class="p-nice">Angular is Easy</h1>
+    <br>
+    <button (click)="toggle()" class="btn-prof">TOGGLE</button>
+    <button (click)="hide()" class="btn-prof">HIDE</button>
+    <button (click)="show()" class="btn-prof">SHOW</button>
+    <button (click)="start()" class="btn-prof">START</button>
+    <button (click)="stop()" class="btn-prof">STOP</button>
+    <button (click)="child()" class="btn-prof">PASS TOCHILD</button>
+    <br>
+    <p class="message-box" [class.message-box-freeze]="!isActive">Number from service: {{ randomNumber }}</p>
+    <app-child [value]="childValue"></app-child>
+    <p class="message-box" *ngIf="isVisible">Do you see me?</p>
+</div>

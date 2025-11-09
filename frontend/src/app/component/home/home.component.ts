@@ -3,10 +3,11 @@ import { Component, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RandomNumberService } from '../../services/random-number.service';
+import { ChildComponent } from "../child/child.component";
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, ChildComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -17,34 +18,41 @@ export class HomeComponent implements OnDestroy {
   isVisible: boolean = true;
   isActive: boolean = false;
 
-  randomNumber: string = 'In attesa...';
+  randomNumber: string = 'Waiting...';
+
+  childValue: string = 'not produced yet';
+
   private subscription?: Subscription;
 
   constructor(private readonly randomService: RandomNumberService) {
-    console.log('🏗️ HomeComponent COSTRUITO');
-    console.log('🔍 Service disponibile?', !!this.randomService);
+    console.log('🏗️ HomeComponent BUILT');
+    console.log('🔍 Is Service available?', !!this.randomService);
   }
 
 
-  avvia() {
+  start() {
     this.subscription = this.randomService.getRandomNumber$().subscribe({
       next: (value) => {
         this.randomNumber = value;
-        console.log('Numero ricevuto:', value);
+        console.log('Received number:', value);
       },
-      error: (err) => console.error('Errore:', err)
+      error: (err) => console.error('Error:', err)
     });
     this.isActive = true;
   }
 
   ngOnDestroy() {
-    console.log('🗑️ Componente distrutto, unsubscribe...');
+    console.log('🗑️ On Destroy, unsubscribe...');
     this.subscription?.unsubscribe();
   }
 
-  ferma() {
-    console.log('Ferma il polling');
+  stop() {
+    console.log('Stop polling');
     this.subscription?.unsubscribe();
     this.isActive = false;
+  }
+
+  child() {
+    this.childValue = this.randomNumber;
   }
 }
