@@ -21,6 +21,7 @@ export class HomeComponent implements OnDestroy {
   randomNumber: string = 'Waiting...';
 
   childValue: string = 'not produced yet';
+  valueFromChild: string = 'not produced yet';
 
   private subscription?: Subscription;
 
@@ -55,4 +56,10 @@ export class HomeComponent implements OnDestroy {
   child() {
     this.childValue = this.randomNumber;
   }
+
+updateParent(value: string) {
+  console.log('Value from child: ' + value);
+  this.valueFromChild = value;
+}
+
 }

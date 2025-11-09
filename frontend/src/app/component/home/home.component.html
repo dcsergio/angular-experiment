@@ -6,9 +6,11 @@
     <button (click)="show()" class="btn-prof">SHOW</button>
     <button (click)="start()" class="btn-prof">START</button>
     <button (click)="stop()" class="btn-prof">STOP</button>
-    <button (click)="child()" class="btn-prof">PASS TOCHILD</button>
+    <button (click)="child()" class="btn-prof">PASS TO CHILD</button>
     <br>
-    <p class="message-box" [class.message-box-freeze]="!isActive">Number from service: {{ randomNumber }}</p>
-    <app-child [value]="childValue"></app-child>
-    <p class="message-box" *ngIf="isVisible">Do you see me?</p>
+    <p class="message-box" [class.message-box-freeze]="!isActive">SERVICE &rightarrow; HOME: {{ randomNumber }}</p>
+    <app-child [value]="childValue" (updateParentEvent)="updateParent($any($event))"></app-child>
+    <p class="message-box message-box-green" [innerHTML]="'CHILD &rightarrow; PARENT: ' + valueFromChild"></p>
+
+    <p class="message-box" *ngIf="isVisible">YOU CAN HIDE ME</p>
 </div>

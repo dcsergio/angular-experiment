@@ -1,1 +1,2 @@
-<p class="message-box">Value received from parent: {{ value }}</p>
+<p class="message-box message-box-green">PARENT &rightarrow; CHILD: {{ value }}</p>
+<button  class="btn-prof" (click)="updateParentEvent.emit(getMessage())">SEND TO PARENT</button>
