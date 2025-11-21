@@ -1,16 +1,16 @@
 <div class="container">
-    <h1 class="p-nice">Angular is Easy</h1>
-    <br>
-    <button (click)="toggle()" class="btn-prof" type="button">TOGGLE</button>
-    <button (click)="hide()" class="btn-prof" type="button">HIDE</button>
-    <button (click)="show()" class="btn-prof" type="button">SHOW</button>
-    <button (click)="start()" class="btn-prof" type="button">SUBSCRIBE</button>
-    <button (click)="stop()" class="btn-prof" type="button">UNSUBSCRIBE</button>
-    <button (click)="child()" class="btn-prof" type="button">TO CHILD</button>
-    <br>
-    <p class="message-box" [class.message-box-freeze]="!isActive">SERVICE &rightarrow; HOME: {{ randomNumber }}</p>
-    <app-child [value]="childValue" (updateParentEvent)="updateParent($any($event))"></app-child>
-    <p class="message-box message-box-green" [innerHTML]="'CHILD &rightarrow; PARENT: ' + valueFromChild"></p>
+  <h1 class="p-nice">Angular is Easy</h1>
+  <br>
+  <button (click)="toggle()" class="btn-prof" type="button">TOGGLE</button>
+  <button (click)="hide()" class="btn-prof" type="button">HIDE</button>
+  <button (click)="show()" class="btn-prof" type="button">SHOW</button>
+  <button [disabled]="isActive" (click)="start()" class="btn-prof" type="button">SUBSCRIBE</button>
+  <button (click)="stop()" class="btn-prof" type="button">UNSUBSCRIBE</button>
+  <button (click)="child()" class="btn-prof" type="button">TO CHILD</button>
+  <br>
+  <p class="message-box" [class.message-box-freeze]="!isActive">We get a random value from a service: {{ randomNumber }}</p>
+  <app-child [value]="childValue" (updateParentEvent)="updateParent($any($event))"></app-child>
+  <p class="message-box message-box-green" [innerHTML]="'Child sent to her parent the value: ' + valueFromChild"></p>
 
-    <p class="message-box" *ngIf="isVisible">YOU CAN HIDE ME</p>
+  <p class="message-box" *ngIf="isVisible">Hideable. This value is the emit count from the the observable timer: {{ val }}</p>
 </div>

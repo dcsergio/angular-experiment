@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { RandomNumberService } from '../../services/random-number.service';
-import { ChildComponent } from "../child/child.component";
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {RandomNumberService} from '../../services/random-number.service';
+import {ChildComponent} from "../child/child.component";
 
 @Component({
   selector: 'app-home',
@@ -12,9 +12,18 @@ import { ChildComponent } from "../child/child.component";
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnDestroy {
-  toggle() { this.isVisible = !this.isVisible };
-  show() { this.isVisible = true };
-  hide() { this.isVisible = false };
+  toggle() {
+    this.isVisible = !this.isVisible
+  };
+
+  show() {
+    this.isVisible = true
+  };
+
+  hide() {
+    this.isVisible = false
+  };
+
   isVisible: boolean = true;
   isActive: boolean = false;
 
@@ -24,6 +33,7 @@ export class HomeComponent implements OnDestroy {
   valueFromChild: string = 'not produced yet';
 
   private subscription?: Subscription;
+  val: string = 'not produced yet';
 
   constructor(private readonly randomService: RandomNumberService) {
     console.log('🏗️ HomeComponent BUILT');
@@ -32,9 +42,11 @@ export class HomeComponent implements OnDestroy {
 
 
   start() {
+
     this.subscription = this.randomService.getRandomNumber$().subscribe({
       next: (value) => {
-        this.randomNumber = value;
+        this.randomNumber = value[0];
+        this.val = value[1];
         console.log('Received number:', value);
       },
       error: (err) => console.error('Error:', err)
@@ -57,9 +69,9 @@ export class HomeComponent implements OnDestroy {
     this.childValue = this.randomNumber;
   }
 
-updateParent(value: string) {
-  console.log('Value from child: ' + value);
-  this.valueFromChild = value;
-}
+  updateParent(value: string) {
+    console.log('Value from child: ' + value);
+    this.valueFromChild = value;
+  }
 
 }

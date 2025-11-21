@@ -1,2 +1,4 @@
-<p class="message-box message-box-green">PARENT &rightarrow; CHILD: {{ value }}</p>
-<button  class="btn-prof" (click)="updateParentEvent.emit(getMessage())">SEND TO PARENT</button>
+<div style="display: flex; align-items: center; gap: 10px;">
+  <button class="btn-prof" (click)="updateParentEvent.emit(getMessage())">Send message to parent</button>
+  <p class="message-box message-box-green" style="margin: 0;">This is a child. It got value from parent: {{ value }}</p>
+</div>
