@@ -34,6 +34,14 @@ public class ModulesController {
 
     public static final int LOGO_PT_SIZE = 100;
 
+    private final PdfFont labelFont;
+    private final PdfFont valueFont;
+
+    public ModulesController() throws IOException {
+        labelFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+        valueFont = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+    }
+
     @GetMapping("/generate-pdf")
     public void generatePdf(@RequestParam(required = false) String name,
                             @RequestParam(required = false) String surname,
@@ -66,8 +74,7 @@ public class ModulesController {
 
             // Create custom fonts
             PdfFont titleFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-            PdfFont labelFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-            PdfFont valueFont = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+
 
             // Main title with modern styling
             Paragraph title = new Paragraph("YOUR DATA")
@@ -94,13 +101,13 @@ public class ModulesController {
             PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, true);
 
             // Name field
-            addFieldRow(table, "Name:", name, labelFont, valueFont, form, pdfDoc, 0);
+            addFieldRow(table, "Name:", name, form, pdfDoc, 0);
 
             // Surname field
-            addFieldRow(table, "Surname:", surname, labelFont, valueFont, form, pdfDoc, 1);
+            addFieldRow(table, "Surname:", surname, form, pdfDoc, 1);
 
             // Job Title field
-            addFieldRow(table, "Job Title:", jobTitle, labelFont, valueFont, form, pdfDoc, 2);
+            addFieldRow(table, "Job Title:", jobTitle, form, pdfDoc, 2);
 
             document.add(table);
             form.flattenFields();
@@ -108,8 +115,7 @@ public class ModulesController {
         }
     }
 
-    private void addFieldRow(Table table, String label, String value, PdfFont labelFont,
-                             PdfFont valueFont, PdfAcroForm form, PdfDocument pdfDoc, int rowIndex) {
+    private void addFieldRow(Table table, String label, String value, PdfAcroForm form, PdfDocument pdfDoc, int rowIndex) {
         // Label cell
         Cell labelCell = new Cell()
                 .add(new Paragraph(label)
