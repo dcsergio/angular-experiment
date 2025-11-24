@@ -18,7 +18,7 @@ public class TelegramController {
 
     @PostMapping(value = "useless_bot")
     public ResponseEntity<Void> onUpdate(@RequestBody TelegramUpdateRequest update) {
-        telegramService.echoUppercase(update);
+        telegramService.sendResponse(update);
         return ResponseEntity.ok().build();
     }
 

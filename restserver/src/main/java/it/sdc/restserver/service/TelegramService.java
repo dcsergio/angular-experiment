@@ -3,6 +3,7 @@ package it.sdc.restserver.service;
 import it.sdc.restserver.dto.TelegramSendMessageRequest;
 import it.sdc.restserver.dto.TelegramUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,21 +16,23 @@ public class TelegramService {
 
     private final RestTemplate restTemplate;
 
+    @Value(value = "${telegram.botToken}")
+    private String botToken;
 
-    public void echoUppercase(TelegramUpdateRequest update) {
+    public void sendResponse(TelegramUpdateRequest update) {
         if (update.message() == null || update.message().text() == null) {
             return;
         }
 
         String originalText = update.message().text();
-        String upperText = originalText.toUpperCase();
+        String responseText = createResponseText(originalText);
 
         Long chatId = update.message().chat().id();
 
         TelegramSendMessageRequest requestBody =
                 new TelegramSendMessageRequest(
                         String.valueOf(chatId),
-                        upperText,
+                        responseText,
                         null,
                         "sendMessage"
                 );
@@ -37,8 +40,12 @@ public class TelegramService {
         sendMessage(requestBody);
     }
 
+    private static String createResponseText(String originalText) {
+        return originalText.toUpperCase();
+    }
+
     private void sendMessage(TelegramSendMessageRequest body) {
-        String botToken = "492578505:AAEpk5TWOUae2LxmVZz3sMIZi-z9km4oXQY";
+
         String url = "https://api.telegram.org/bot" + botToken + "/sendMessage";
 
         HttpHeaders headers = new HttpHeaders();

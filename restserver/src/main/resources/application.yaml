@@ -6,8 +6,12 @@ server:
   port: 8443
   ssl:
     enabled: true
-    #need to change wth your own domain's certificate
+    # need to add your own domain's certificate
     key-store: classpath:cert.pfx
     key-store-type: PKCS12
     # need to set environment variable
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
+
+telegram:
+  # need to set your own token
+  botToken: ${TELEGRAM_BOT_TOKEN}
