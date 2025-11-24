@@ -3,4 +3,11 @@ spring:
     name: restserver
 
 server:
-  port: 4040
+  port: 8443
+  ssl:
+    enabled: true
+    #need to change wth your own domain's certificate
+    key-store: classpath:cert.pfx
+    key-store-type: PKCS12
+    # need to set environment variable
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
