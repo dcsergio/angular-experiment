@@ -7,7 +7,7 @@ server:
   ssl:
     enabled: true
     # need to add your own domain's certificate
-    key-store: classpath:cert.pfx
+    key-store: ${KEYSTORE_PATH}
     key-store-type: PKCS12
     # need to set environment variable
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
