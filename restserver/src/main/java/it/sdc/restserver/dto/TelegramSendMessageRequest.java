@@ -2,8 +2,12 @@ package it.sdc.restserver.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public record TelegramSendMessageRequest(
         @JsonProperty("chat_id")
         String chatId,
@@ -17,13 +21,14 @@ public record TelegramSendMessageRequest(
         @JsonProperty("method")
         String method
 ) {
-
+    @Builder
     public record ReplyMarkup(
             @JsonProperty("inline_keyboard")
-            InlineKeyboardButton[][] inlineKeyboard
+            List<List<InlineKeyboardButton>> inlineKeyboard
     ) {
     }
 
+    @Builder
     public record InlineKeyboardButton(
             @JsonProperty("text")
             String text,

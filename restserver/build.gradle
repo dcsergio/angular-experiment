@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-
+    implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'com.itextpdf:itext-core:9.4.0'
     implementation 'com.itextpdf:forms:9.4.0'
 
