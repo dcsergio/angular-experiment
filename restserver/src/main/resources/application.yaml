@@ -13,5 +13,7 @@ server:
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
 
 telegram:
-  # need to set your own token
+  # set your own token
   botUrl: "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
+  # set your own bot username (get it from BotFather)
+  botName: ${BOT_USERNAME}

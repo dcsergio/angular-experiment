@@ -1,8 +1,12 @@
 package it.sdc.restserver.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.sdc.restserver.Jokes;
 import it.sdc.restserver.dto.TelegramSendMessageRequest;
 import it.sdc.restserver.dto.Update;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,58 +14,83 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TelegramService {
 
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final Jokes jokes;
 
     @Value("${telegram.botUrl}")
     private String botUrl;
 
-    public void sendResponse(Update update) {
+    @Value("${telegram.botName}")
+    private String botName;
+
+    public void sendResponse(Update update) throws JsonProcessingException {
+
+        log.info("""
+                incoming json:
+                {}
+                """, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(update));
         String inputText;
+
+        Update.Message message = update.message();
+
 
         if (update.callbackQuery() != null) {
             inputText = update.callbackQuery().data();
-        } else if (update.message() != null && update.message().text() != null) {
-            inputText = update.message().text();
+        } else if (message != null) {
+            if (message.leftChatMember() != null && message.leftChatMember().username().equals(botName)) {
+                //they kicked me out
+                return;
+            }
+            if (message.text() != null) {
+
+                inputText = message.text();
+            } else if (message.sticker() != null) {
+                inputText = "sticker";
+            } else {
+                inputText = "no text";
+            }
         } else {
-            return;
+            inputText = "no message";
         }
 
-        String responseText = createResponseText(inputText);
 
-        Long chatId = update.message().chat().id();
+        if (message != null) {
+            Long chatId = message.chat().id();
 
-        var keyboard = makeKeyboard(List.of("mario", "luigi", "antonio"), 3);
 
-        TelegramSendMessageRequest requestBody =
-                TelegramSendMessageRequest.builder()
-                        .chatId(String.valueOf(chatId))
-                        .text(responseText)
-                        .replyMarkup(TelegramSendMessageRequest.ReplyMarkup.builder()
-                                .inlineKeyboard(keyboard.inlineKeyboard())
-                                .build())
-                        .build();
+            var builder = TelegramSendMessageRequest.builder().chatId(String.valueOf(chatId));
+            builder = createResponseText(inputText, builder);
+            TelegramSendMessageRequest requestBody = builder.build();
 
-        sendMessage(requestBody);
+            log.info("""
+                    outgoing json:
+                    {}
+                    """, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestBody));
+            sendMessage(requestBody);
+        }
     }
 
-    private static String createResponseText(String originalText) {
+    private TelegramSendMessageRequest.TelegramSendMessageRequestBuilder createResponseText(String originalText, TelegramSendMessageRequest.TelegramSendMessageRequestBuilder builder) {
         return switch (originalText.toLowerCase()) {
-            case "do", "dom", "domenica" -> "DOMENICA";
-            case "lu", "lun", "lunedi", "lunedì" -> "LUNEDÌ";
-            case "ma", "mar", "martedi", "martedì" -> "MARTEDÌ";
-            case "me", "mer", "mercoledi", "mercoledì" -> "MERCOLEDÌ";
-            case "gi", "gio", "giovedi", "giovedì" -> "GIOVEDÌ";
-            case "ve", "ven", "venerdi", "venerdì" -> "VENERDÌ";
-            case "sa", "sab", "sabato" -> "SABATO";
-            default -> originalText.toUpperCase();
+            case "/barzelletta" -> createJokeText(builder);
+            default -> builder.text("non ho capito");
         };
+    }
+
+    private TelegramSendMessageRequest.TelegramSendMessageRequestBuilder createJokeText(TelegramSendMessageRequest.TelegramSendMessageRequestBuilder builder) {
+        var joke = jokes.getRandomJoke();
+        String question = joke.getQuestion();
+        String answer = joke.getAnswer();
+        String safeQuestion = question.replace("?", "\\?").replace(".", "\\.").replace("!", "\\!");
+        String safeAnswer = answer.replace("?", "\\?").replace(".", "\\.").replace("!", "\\!");
+
+        return builder.text("*" + safeQuestion + "*\n\n" + "||" + safeAnswer + "||").parseMode("MarkdownV2");
     }
 
     private void sendMessage(TelegramSendMessageRequest body) {
@@ -73,40 +102,5 @@ public class TelegramService {
         HttpEntity<TelegramSendMessageRequest> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForEntity(botUrl, entity, String.class);
-    }
-
-    private TelegramSendMessageRequest.ReplyMarkup makeKeyboard(List<String> menu, int cols) {
-        List<List<TelegramSendMessageRequest.InlineKeyboardButton>> keyboard = new ArrayList<>();
-
-        int size = menu.size();
-        int fullRowNum = size / cols;
-        int remainingElements = size % cols;
-
-        for (int i = 0; i < fullRowNum; i++) {
-            List<TelegramSendMessageRequest.InlineKeyboardButton> row = new ArrayList<>();
-            for (int j = 0; j < cols; j++) {
-                TelegramSendMessageRequest.InlineKeyboardButton elem =
-                        TelegramSendMessageRequest.InlineKeyboardButton.builder()
-                                .text(menu.get(i * cols + j))
-                                .callbackData(menu.get(i * cols + j))
-                                .build();
-                row.add(elem);
-            }
-            keyboard.add(row);
-        }
-        List<TelegramSendMessageRequest.InlineKeyboardButton> row = new ArrayList<>();
-        for (int k = 0; k < remainingElements; k++) {
-            var elem = TelegramSendMessageRequest.InlineKeyboardButton.builder()
-                    .text(menu.get(fullRowNum * cols + k))
-                    .callbackData(menu.get(fullRowNum * cols + k))
-                    .build();
-            row.add(elem);
-        }
-        keyboard.add(row);
-
-
-        return TelegramSendMessageRequest.ReplyMarkup.builder()
-                .inlineKeyboard(keyboard)
-                .build();
     }
 }

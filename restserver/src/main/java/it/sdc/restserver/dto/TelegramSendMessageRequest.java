@@ -19,7 +19,10 @@ public record TelegramSendMessageRequest(
         ReplyMarkup replyMarkup,
 
         @JsonProperty("method")
-        String method
+        String method,
+
+        @JsonProperty(value = "parse_mode", defaultValue = "MarkdownV2")
+        String parseMode
 ) {
     @Builder
     public record ReplyMarkup(
