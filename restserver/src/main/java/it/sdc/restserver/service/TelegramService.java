@@ -3,8 +3,9 @@ package it.sdc.restserver.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.sdc.restserver.Jokes;
-import it.sdc.restserver.dto.TelegramSendMessageRequest;
-import it.sdc.restserver.dto.Update;
+import it.sdc.restserver.dto.TelegramSendMessageRequestDto;
+import it.sdc.restserver.dto.UpdateDto;
+import it.sdc.restserver.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,12 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TelegramService {
 
     private final RestTemplate restTemplate;
+    private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final Jokes jokes;
 
@@ -29,7 +33,12 @@ public class TelegramService {
     @Value("${telegram.botName}")
     private String botName;
 
-    public void sendResponse(Update update) throws JsonProcessingException {
+    public List<UserDto> getAllUsers() {
+        var users = userRepository.findAll();
+        return objectMapper.convertValue(users, objectMapper.getTypeFactory().constructCollectionType(List.class, UserDto.class));
+    }
+
+    public void sendResponse(UpdateDto update) throws JsonProcessingException {
 
         log.info("""
                 incoming json:
@@ -37,7 +46,7 @@ public class TelegramService {
                 """, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(update));
         String inputText;
 
-        Update.Message message = update.message();
+        UpdateDto.Message message = update.message();
 
 
         if (update.callbackQuery() != null) {
@@ -64,9 +73,9 @@ public class TelegramService {
             Long chatId = message.chat().id();
 
 
-            var builder = TelegramSendMessageRequest.builder().chatId(String.valueOf(chatId));
+            var builder = TelegramSendMessageRequestDto.builder().chatId(String.valueOf(chatId));
             builder = createResponseText(inputText, builder);
-            TelegramSendMessageRequest requestBody = builder.build();
+            TelegramSendMessageRequestDto requestBody = builder.build();
 
             log.info("""
                     outgoing json:
@@ -76,14 +85,14 @@ public class TelegramService {
         }
     }
 
-    private TelegramSendMessageRequest.TelegramSendMessageRequestBuilder createResponseText(String originalText, TelegramSendMessageRequest.TelegramSendMessageRequestBuilder builder) {
+    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createResponseText(String originalText, TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
         return switch (originalText.toLowerCase()) {
             case "/barzelletta" -> createJokeText(builder);
             default -> builder.text("non ho capito");
         };
     }
 
-    private TelegramSendMessageRequest.TelegramSendMessageRequestBuilder createJokeText(TelegramSendMessageRequest.TelegramSendMessageRequestBuilder builder) {
+    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createJokeText(TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
         var joke = jokes.getRandomJoke();
         String question = joke.getQuestion();
         String answer = joke.getAnswer();
@@ -93,13 +102,13 @@ public class TelegramService {
         return builder.text("*" + safeQuestion + "*\n\n" + "||" + safeAnswer + "||").parseMode("MarkdownV2");
     }
 
-    private void sendMessage(TelegramSendMessageRequest body) {
+    private void sendMessage(TelegramSendMessageRequestDto body) {
 
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<TelegramSendMessageRequest> entity = new HttpEntity<>(body, headers);
+        HttpEntity<TelegramSendMessageRequestDto> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForEntity(botUrl, entity, String.class);
     }

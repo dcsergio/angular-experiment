@@ -1,16 +1,26 @@
 spring:
+  datasource:
+    url: jdbc:sqlite:telegram.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   application:
     name: restserver
 
 server:
   port: 8443
   ssl:
-    enabled: true
+    enabled: false
     # need to add your own domain's certificate
     key-store: ${KEYSTORE_PATH}
     key-store-type: PKCS12
     # need to set environment variable
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
+
+
 
 telegram:
   # set your own token

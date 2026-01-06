@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record Update(
+public record UpdateDto(
         @JsonProperty("update_id") Integer updateId, @JsonProperty("message") Message message,
         @JsonProperty("edited_message") Message editedMessage,
         @JsonProperty("callback_query") CallbackQuery callbackQuery,

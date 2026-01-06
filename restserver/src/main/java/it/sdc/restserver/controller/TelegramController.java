@@ -2,15 +2,15 @@ package it.sdc.restserver.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import it.sdc.restserver.dto.Update;
+import it.sdc.restserver.dto.UpdateDto;
+import it.sdc.restserver.dto.UserDto;
 import it.sdc.restserver.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "telegram")
@@ -20,8 +20,13 @@ public class TelegramController {
 
     private final TelegramService telegramService;
 
+    @GetMapping(value = "users")
+    public List<UserDto> getAllUsers() {
+        return telegramService.getAllUsers();
+    }
+
     @PostMapping(value = "useless_bot")
-    public ResponseEntity<Void> onUpdate(@RequestBody Update update) {
+    public ResponseEntity<Void> onUpdate(@RequestBody UpdateDto update) {
         try {
             telegramService.sendResponse(update);
         } catch (JsonProcessingException e) {

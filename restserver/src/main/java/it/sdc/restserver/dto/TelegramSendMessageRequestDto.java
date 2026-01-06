@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public record TelegramSendMessageRequest(
+public record TelegramSendMessageRequestDto(
         @JsonProperty("chat_id")
         String chatId,
 
