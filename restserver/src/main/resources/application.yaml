@@ -13,7 +13,7 @@ spring:
 server:
   port: 8443
   ssl:
-    enabled: false
+    enabled: true
     # need to add your own domain's certificate
     key-store: ${KEYSTORE_PATH}
     key-store-type: PKCS12
