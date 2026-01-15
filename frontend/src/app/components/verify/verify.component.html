@@ -1,0 +1,23 @@
+<div class="verify-container">
+    <h2>Verifica Voucher</h2>
+
+    <div class="form-group">
+        <label for="code">Codice Voucher:</label>
+        <input type="text" id="code" [(ngModel)]="code" placeholder="Inserisci codice (es. GIFT-100-...)"
+            class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="signature">PIN di Sicurezza:</label>
+        <input type="text" id="signature" [(ngModel)]="signature" placeholder="Inserisci PIN (4 cifre)"
+            class="form-control" maxlength="4">
+    </div>
+
+    <button (click)="verify()" [disabled]="!code || !signature" class="btn-verify">Verifica Autenticità</button>
+
+    <div *ngIf="verificationResult !== null" class="result-box"
+        [ngClass]="{'valid': verificationResult, 'invalid': !verificationResult}">
+        <h3 *ngIf="verificationResult">✅ Voucher Valido</h3>
+        <h3 *ngIf="!verificationResult">❌ Voucher NON Valido o Manomesso</h3>
+    </div>
+</div>

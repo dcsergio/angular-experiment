@@ -1,0 +1,19 @@
+<div class="codes-container">
+  <h2>Genera Buono Regalo</h2>
+
+  <div class="form-group">
+    <label for="amount">Importo (€):</label>
+    <input type="number" id="amount" [(ngModel)]="amount" placeholder="Inserisci importo" class="form-control">
+  </div>
+
+  <div class="button-group">
+    <button (click)="generateCode()" [disabled]="!amount" class="btn-generate">Genera Codice</button>
+    <button (click)="downloadVouchers()" class="btn-download">Scarica Lista</button>
+  </div>
+
+  <div *ngIf="generatedVoucher" class="result-box">
+    <h3>Codice Generato:</h3>
+    <p class="code-display">{{ generatedVoucher.code }}</p>
+    <p class="signature-display">PIN: {{ generatedVoucher.signature }}</p>
+  </div>
+</div>

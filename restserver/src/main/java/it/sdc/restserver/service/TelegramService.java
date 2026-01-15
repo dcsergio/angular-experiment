@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,8 @@ public class TelegramService {
 
     public List<UserDto> getAllUsers() {
         var users = userRepository.findAll();
-        return objectMapper.convertValue(users, objectMapper.getTypeFactory().constructCollectionType(List.class, UserDto.class));
+        return objectMapper.convertValue(users,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, UserDto.class));
     }
 
     public void sendResponse(UpdateDto update) throws JsonProcessingException {
@@ -48,12 +50,11 @@ public class TelegramService {
 
         UpdateDto.Message message = update.message();
 
-
         if (update.callbackQuery() != null) {
             inputText = update.callbackQuery().data();
         } else if (message != null) {
             if (message.leftChatMember() != null && message.leftChatMember().username().equals(botName)) {
-                //they kicked me out
+                // they kicked me out
                 return;
             }
             if (message.text() != null) {
@@ -68,10 +69,8 @@ public class TelegramService {
             inputText = "no message";
         }
 
-
         if (message != null) {
             Long chatId = message.chat().id();
-
 
             var builder = TelegramSendMessageRequestDto.builder().chatId(String.valueOf(chatId));
             builder = createResponseText(inputText, builder);
@@ -85,14 +84,16 @@ public class TelegramService {
         }
     }
 
-    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createResponseText(String originalText, TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
+    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createResponseText(String originalText,
+            TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
         return switch (originalText.toLowerCase()) {
             case "/barzelletta" -> createJokeText(builder);
             default -> builder.text("non ho capito");
         };
     }
 
-    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createJokeText(TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
+    private TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder createJokeText(
+            TelegramSendMessageRequestDto.TelegramSendMessageRequestDtoBuilder builder) {
         var joke = jokes.getRandomJoke();
         String question = joke.getQuestion();
         String answer = joke.getAnswer();
@@ -104,12 +105,11 @@ public class TelegramService {
 
     private void sendMessage(TelegramSendMessageRequestDto body) {
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<TelegramSendMessageRequestDto> entity = new HttpEntity<>(body, headers);
 
-        restTemplate.postForEntity(botUrl, entity, String.class);
+        restTemplate.postForEntity(Objects.requireNonNull(botUrl), entity, String.class);
     }
 }
