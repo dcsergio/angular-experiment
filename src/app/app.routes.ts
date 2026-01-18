@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { PipesComponent } from './components/pipes/pipes.component';
-import { CodesComponent } from './components/codes/codes.component';
+import { VouchersComponent } from './components/vouchers/vouchers.component';
 import { VerifyComponent } from './components/verify/verify.component';
 
 
@@ -25,9 +25,9 @@ export const routes: Routes = [
     title: 'Angular Pipes'
   },
   {
-    path: 'codes',
-    component: CodesComponent,
-    title: 'Genera Codici'
+    path: 'vouchers',
+    component: VouchersComponent,
+    title: 'Genera Voucher'
   },
   {
     path: 'verify',

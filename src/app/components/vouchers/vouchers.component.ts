@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { VoucherService, Voucher } from '../../services/voucher.service';
 
 @Component({
-    selector: 'app-codes',
+    selector: 'app-vouchers',
     standalone: true,
     imports: [CommonModule, FormsModule],
-    templateUrl: './codes.component.html',
-    styleUrls: ['./codes.component.css']
+    templateUrl: './vouchers.component.html',
+    styleUrls: ['./vouchers.component.css']
 })
-export class CodesComponent {
+export class VouchersComponent {
     amount: number | null = null;
     generatedVoucher: Voucher | null = null;
 

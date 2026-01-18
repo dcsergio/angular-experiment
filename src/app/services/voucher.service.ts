@@ -22,7 +22,7 @@ export class VoucherService {
         // Excluding 'O', '0', 'I', '1' to avoid confusion
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let code = '';
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 16; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
 
@@ -79,16 +79,16 @@ export class VoucherService {
     }
 
     downloadVouchers() {
-        const content = this.vouchers.map(v =>
-            `Code: ${v.code} | Amount: ${v.amount}€ | Date: ${v.createdAt} | Signature: ${v.signature}`
-        ).join('\n');
-
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'vouchers.txt';
-        a.click();
-        window.URL.revokeObjectURL(url);
+        this.http.get('/vouchers/generate-pdf', { responseType: 'blob' }).subscribe({
+            next: (blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'vouchers.pdf';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            },
+            error: (e: any) => console.error('Error downloading PDF:', e)
+        });
     }
 }
