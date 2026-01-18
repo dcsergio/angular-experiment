@@ -1,7 +1,5 @@
 package it.sdc.restserver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,9 +20,4 @@ public class RestserverApplication {
         return new RestTemplate();
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-    }
 }

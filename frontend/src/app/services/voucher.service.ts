@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 export interface Voucher {
     code: string;
     amount: number;
     signature: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 @Injectable({
@@ -14,7 +15,7 @@ export class VoucherService {
     private vouchers: Voucher[] = [];
     private readonly SECRET_KEY = 'MY_SUPER_SECRET_KEY'; // In a real app, this should be backend-side or non-exposed
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
     async generateVoucher(amount: number): Promise<Voucher> {
         // Generate a 14-character alphanumeric string (uppercase)
@@ -34,8 +35,19 @@ export class VoucherService {
             code,
             amount,
             signature,
-            createdAt: new Date()
+            createdAt: new Date().toISOString()
         };
+
+        // Save to backend
+        this.http.post<Voucher>('/vouchers', voucher).subscribe({
+            next: (v: Voucher) => console.log('Voucher saved:', v),
+            error: (e: any) => {
+                console.error('Error saving voucher:', e);
+                if (e.error) {
+                    console.error('Server error details:', e.error);
+                }
+            }
+        });
 
         this.vouchers.push(voucher);
         return voucher;
@@ -68,7 +80,7 @@ export class VoucherService {
 
     downloadVouchers() {
         const content = this.vouchers.map(v =>
-            `Code: ${v.code} | Amount: ${v.amount}€ | Date: ${v.createdAt.toISOString()} | Signature: ${v.signature}`
+            `Code: ${v.code} | Amount: ${v.amount}€ | Date: ${v.createdAt} | Signature: ${v.signature}`
         ).join('\n');
 
         const blob = new Blob([content], { type: 'text/plain' });
